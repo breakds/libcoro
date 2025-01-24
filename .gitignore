@@ -38,3 +38,6 @@
 /Testing/
 
 /.vscode/
+
+.envrc
+.direnv
