@@ -21,7 +21,7 @@ if (NOT "$ENV{version}" STREQUAL "")
     set(PROJECT_VERSION "$ENV{version}" CACHE INTERNAL "Copied from environment variable")
 endif()
 
-option(LIBCORO_EXTERNAL_DEPENDENCIES "Use Cmake find_package to resolve dependencies instead of embedded libraries, Default=OFF." OFF)
+option(LIBCORO_EXTERNAL_DEPENDENCIES "Use Cmake find_package to resolve dependencies instead of embedded libraries, Default=ON." ON)
 option(LIBCORO_BUILD_TESTS           "Build the tests, Default=ON." ON)
 option(LIBCORO_CODE_COVERAGE         "Enable code coverage, tests must also be enabled, Default=OFF" OFF)
 option(LIBCORO_BUILD_EXAMPLES        "Build the examples, Default=ON." ON)
