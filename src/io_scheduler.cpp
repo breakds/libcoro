@@ -294,6 +294,9 @@ auto io_scheduler::process_events_execute(std::chrono::milliseconds timeout) -> 
     // with thread pool processing, but probably has an extremely low chance of occuring due to
     // the thread switch required.  If m_max_events == 1 this would be unnecessary.
 
+    auto* ptr = static_cast<coro::task_container<coro::io_scheduler>*>(m_owned_tasks);
+    printf("m_handles_to_resume: %lu, size = %lu\n", m_handles_to_resume.size(), ptr->size());
+    ptr->garbage_collect();
     if (!m_handles_to_resume.empty())
     {
         if (m_opts.execution_strategy == execution_strategy_t::process_tasks_inline)

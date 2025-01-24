@@ -58,6 +58,7 @@ auto thread_pool::resume(std::coroutine_handle<> handle) noexcept -> bool
 
     m_size.fetch_add(1, std::memory_order::release);
     schedule_impl(handle);
+    ++m_num_queued;
     return true;
 }
 
@@ -104,6 +105,8 @@ auto thread_pool::executor(std::size_t idx) -> void
         auto handle = m_queue.front();
         m_queue.pop_front();
         lk.unlock();
+
+        ++m_num_popped;
 
         // Release the lock while executing the coroutine.
         handle.resume();

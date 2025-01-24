@@ -225,6 +225,9 @@ public:
      */
     auto queue_empty() const noexcept -> bool { return queue_size() == 0; }
 
+    int32_t num_queued() const { return m_num_queued.load(); }
+    int32_t num_popped() const { return m_num_popped.load(); }
+
 private:
     /// The configuration options.
     options m_opts;
@@ -250,6 +253,9 @@ private:
     std::atomic<std::size_t> m_size{0};
     /// Has the thread pool been requested to shut down?
     std::atomic<bool> m_shutdown_requested{false};
+
+    std::atomic_int32_t m_num_queued{0};
+    std::atomic_int32_t m_num_popped{0};
 };
 
 } // namespace coro

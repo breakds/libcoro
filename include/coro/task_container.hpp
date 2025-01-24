@@ -125,6 +125,9 @@ public:
      */
     auto empty() const -> bool { return size() == 0; }
 
+    int32_t num_cleanup_task() const { return m_num_cleanup_task.load(); }
+    int32_t num_cleanup_task_resumed() const { return m_num_cleanup_task_resumed.load(); }
+
     /**
      * @return The capacity of this task manager before it will need to grow in size.
      */
@@ -208,8 +211,10 @@ private:
      */
     auto make_cleanup_task(task<void> user_task, std::size_t index) -> coro::task<void>
     {
+        ++m_num_cleanup_task;
         // Immediately move the task onto the executor.
         co_await m_executor->schedule();
+        ++m_num_cleanup_task_resumed;
 
         try
         {
@@ -258,6 +263,9 @@ private:
     double m_growth_factor{};
     /// The executor to schedule tasks that have just started.
     std::shared_ptr<executor_type> m_executor{nullptr};
+
+    std::atomic_int32_t m_num_cleanup_task{0};
+    std::atomic_int32_t m_num_cleanup_task_resumed{0};
 
     auto init(std::size_t reserve_size) -> void
     {

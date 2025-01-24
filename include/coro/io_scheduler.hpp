@@ -234,8 +234,9 @@ public:
      * @return THe result of the poll operation.
      */
     [[nodiscard]] auto poll(
-        const net::socket& sock, coro::poll_op op, std::chrono::milliseconds timeout = std::chrono::milliseconds{0})
-        -> coro::task<poll_status>
+        const net::socket&        sock,
+        coro::poll_op             op,
+        std::chrono::milliseconds timeout = std::chrono::milliseconds{0}) -> coro::task<poll_status>
     {
         return poll(sock.native_handle(), op, timeout);
     }
@@ -298,9 +299,25 @@ public:
     /**
      * @return True if the task queue is empty and zero tasks are currently executing.
      */
-    auto empty() const noexcept -> bool
+    auto empty() const noexcept -> bool { return size() == 0; }
+
+    auto print_pool_info() const noexcept
     {
-        return size() == 0;
+        printf(
+            "thread pool. size = %lu, queue_size = %lu, num_queued: %d, num_popped: %d\n",
+            m_thread_pool->size(),
+            m_thread_pool->queue_size(),
+            m_thread_pool->num_queued(),
+            m_thread_pool->num_popped());
+    }
+
+    auto print_container_info() const noexcept
+    {
+        auto* ptr = static_cast<coro::task_container<coro::io_scheduler>*>(m_owned_tasks);
+        printf(
+            "container. num cleanup task = %d, resumed = %d\n",
+            ptr->num_cleanup_task(),
+            ptr->num_cleanup_task_resumed());
     }
 
     /**

@@ -30,6 +30,7 @@ static void ManySmallTask()
     {
         printf("total = %d\n", total.load());
         scheduler->print_pool_info();
+        scheduler->print_container_info();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
