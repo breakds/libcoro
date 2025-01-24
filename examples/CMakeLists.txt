@@ -57,6 +57,11 @@ add_executable(coro_when_all coro_when_all.cpp)
 target_link_libraries(coro_when_all PUBLIC libcoro)
 target_compile_options(coro_when_all PUBLIC ${LIBCORO_EXAMPLE_OPTIONS})
 
+add_executable(coro_high_concurrency coro_high_concurrency.cpp)
+target_link_libraries(coro_high_concurrency PUBLIC libcoro)
+target_compile_options(coro_high_concurrency PUBLIC ${LIBCORO_EXAMPLE_OPTIONS})
+
+
 if(LIBCORO_FEATURE_NETWORKING)
     add_executable(coro_task_container coro_task_container.cpp)
     target_link_libraries(coro_task_container PUBLIC libcoro)
